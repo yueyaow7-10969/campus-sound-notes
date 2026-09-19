@@ -7,7 +7,7 @@
 3. 问题 export tags 保持 place/location_detail/date/time/source/disturbance/activity/nature/weather/note/consent。CSV 导出选文本标签，不选数字 recode values。
 4. 开放 anonymous link，不增加学校登录验证；开启 Anonymize responses。检查问卷可嵌入和手机布局。不得为了美观移除学校强制品牌元素。
 5. 在 Look & Feel 使用暖白 #F7F7F0、正文 #19382E、主按钮 #245B49、16px 正文。实际选项由学校授权主题能力决定。
-6. 提交后的 End of Survey message：Thanks for listening. Your response has been recorded. The map is updated periodically. GitHub Pages 激活后再添加已验证的 Explore 链接。
+6. 提交后的 End of Survey message：Thanks for listening. Your response has been recorded. The map is updated periodically. 另加 Explore the campus soundscape 链接，指向 https://yueyaow7-10969.github.io/campus-sound-notes/#/explore ，在新标签页打开。
 7. Publish 后复制 anonymous link 到 public/site-config.json 的 qualtricsUrl。使用无登录浏览器完成一次明确标为 QA 的提交，核对 Data & Analysis 已保存；QA 不进入公开地图。
 
 官方说明：https://www.qualtrics.com/support/survey-platform/survey-module/survey-tools/import-and-export-surveys/
@@ -41,3 +41,5 @@
 当前 Chrome 自动化下载 CSV 被浏览器阻止，尚未完成真实导出文件的端到端导入核验。需要从 Data & Analysis → Export & Import → Manage Previous Downloads 下载已生成的 CSV。选择 Export labels、Download all fields，保留空值；不要启用内部 ID 标题。原始文件放在 private-data/。
 
 主动定位更新已发布。另提交 1 条明确标为 QA 的合成坐标测试，Data & Analysis 的 View Response 已显示全部 5 个 Embedded Data 字段和值；该记录不属于现场观察，不进入公开数据。URL 注入合成字段只用于核对问卷保存链路，设备成功回调另以单元测试验证。当前设备实际定位请求超时，已验证仍可选择地点并继续投稿；尚未验证校园内真实手机的定位精度。网站内嵌问卷已在 Chrome 验证，390 px 手机与桌面截图已检查，360/430 px 无横向溢出；按钮高度 48 px，键盘 Tab 可进入地点选择。15 项测试、构建及发布文件扫描通过。
+
+GitHub Pages 已启用 main /docs 并确认可公开打开；游客从正式网站进入问卷，实际投稿成功并在后台核对中文、空值与手动地点。测试记录仍不公开。发布时补强定位状态：被必填校验留在当前页后仍可重试，采用具名生命周期回调；16 项测试通过。回执已发布公开地图链接。Chrome 的真实 CSV 下载仍被拦截，真实导出→导入的验收尚未完成。

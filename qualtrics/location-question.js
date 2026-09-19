@@ -1,6 +1,6 @@
 // Install on the existing "place" question. Survey Flow fields are listed in SETUP.md.
 // No location request is made until the participant presses Use my location.
-Qualtrics.SurveyEngine.addOnReady(function () {
+Qualtrics.SurveyEngine.addOnReady(function initializeObservationLocation() {
   var engine = Qualtrics.SurveyEngine;
   var container = this.getQuestionContainer();
   if (!container || container.querySelector('.csn-location')) return;
@@ -52,6 +52,12 @@ Qualtrics.SurveyEngine.addOnReady(function () {
     try { clearFields(); clear.hidden = true; status.textContent = 'No device coordinates attached. Choose a public place below.'; }
     catch (_) { status.textContent = 'Coordinates could not be cleared. Reload this form before continuing without location.'; }
   });
-  engine.addOnPageSubmit(function () { alive = false; request++; });
-  engine.addOnUnload(function () { alive = false; request++; });
+  engine.addOnPageSubmit(function invalidatePendingLocation() {
+    request++;
+    if (pending) {
+      pending = false; locate.disabled = false; clear.hidden = true;
+      status.textContent = 'Location request cancelled. Try again or choose a public place below.';
+    }
+  });
+  engine.addOnUnload(function disposeObservationLocation() { alive = false; request++; });
 });

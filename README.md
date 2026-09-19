@@ -2,6 +2,8 @@
 
 A campus listening project built with React, TypeScript and Leaflet. GitHub Pages serves the website; a school Qualtrics survey collects observations. The public map reads a dated, de-identified JSON snapshot.
 
+Live website: https://yueyaow7-10969.github.io/campus-sound-notes/
+
 ## Run locally
 
 Use Node.js 24 or later.
