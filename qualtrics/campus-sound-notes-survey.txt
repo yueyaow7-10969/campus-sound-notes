@@ -1,5 +1,13 @@
 [[AdvancedFormat]]
 
+[[Block:Welcome]]
+
+[[Question:DB]]
+
+[[ID:welcome]]
+
+Share what you heard at a public place on NUS Kent Ridge campus. Listen for about 60 seconds, then record the place, time and your experience. The form takes around 2 minutes.
+
 [[Block:Where did you listen?]]
 
 [[Question:MC:DropDown]]
@@ -38,7 +46,7 @@ Location detail · Required if Other, otherwise optional. Name the public place 
 
 [[ID:date]]
 
-Observation date · Required · YYYY-MM-DD
+Observation date · Required · YYYY/MM/DD
 
 [[Question:TE:SingleLine]]
 
