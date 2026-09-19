@@ -1,0 +1,14 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {typedModule,parseCSV,csv} from '../scripts/lib.mjs';
+const {parseSnapshot}=await typedModule('shared/snapshot.ts');
+const {soundscape}=await typedModule('shared/domain.ts');
+const {surveyUrl}=await typedModule('src/site.ts');
+const note={id:'CSN-test-001',kind:'hypothetical',place_name:'Test public place',observed_at:'2026-09-18T10:00:00+08:00',public_latitude:1.296,public_longitude:103.773,source:'traffic',disturbance:4,activity:'resting',nature_presence:'clear',weather:null,note:'测试，鸟鸣\nSecond line'};
+const snapshot=(records)=>({schema_version:1,updated_at:'2026-09-19T10:00:00+08:00',records});
+test('public snapshot preserves Unicode, nulls and timezone',()=>assert.deepEqual(parseSnapshot(snapshot([note])).records,[note]));
+test('rejects raw personal fields, precise coordinates and test records',()=>{for(const extra of [{email:'private@example.invalid'},{public_latitude:1.29629},{kind:'test'},{disturbance:0},{observed_at:'2026-09-18T10:00:00'},{nature_presence:'birds'},{public_latitude:NaN}])assert.throws(()=>parseSnapshot(snapshot([{...note,...extra}])));});
+test('rejects duplicate IDs, missing update time and invalid empty snapshot',()=>{assert.throws(()=>parseSnapshot(snapshot([note,note])));assert.throws(()=>parseSnapshot({...snapshot([note]),updated_at:null}));assert.deepEqual(parseSnapshot({schema_version:1,updated_at:null,records:[]}).records,[]);});
+test('nature denominator excludes missing and unsure independently from disturbance',()=>{const rows=['clear',null,'unsure','none'].map((nature_presence,i)=>({...note,id:'CSN-'+i,nature_presence,disturbance:i+1}));const n=soundscape(rows,'nature')[0],d=soundscape(rows,'disturbance')[0];assert.deepEqual([n.numerator,n.denominator,n.percent],[1,2,50]);assert.deepEqual([d.numerator,d.denominator,d.percent],[1,4,25]);});
+test('CSV round trip handles BOM, quotes, Chinese, newlines and empty cells',()=>{const rows=[['note','weather'],['a "quote", 中文\nline','']];assert.deepEqual(parseCSV(csv(rows)),rows);assert.throws(()=>parseCSV('"unfinished'));});
+test('private review CSV escapes spreadsheet formula payloads',()=>assert.equal(parseCSV(csv([['=1+1']]))[0][0],"'=1+1"));
+test('only accepts public HTTPS Qualtrics survey URLs without tracking or credentials',()=>{assert.equal(surveyUrl('https://nus.syd1.qualtrics.com/jfe/form/SV_example123'),'https://nus.syd1.qualtrics.com/jfe/form/SV_example123');for(const u of ['', 'https://qualtrics.com.evil.invalid/jfe/form/SV_x','http://nus.qualtrics.com/jfe/form/SV_x','https://nus.qualtrics.com/jfe/form/SV_x?token=private','https://name:secret@nus.qualtrics.com/jfe/form/SV_x'])assert.equal(surveyUrl(u),null);});

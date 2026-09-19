@@ -1,0 +1,161 @@
+[[AdvancedFormat]]
+
+[[Block:Where did you listen?]]
+
+[[Question:MC:DropDown]]
+
+[[ID:place]]
+
+Public place · Required
+
+[[Choices]]
+
+Central Library exterior
+
+UTown Town Plaza exterior
+
+Kent Ridge MRT bus stop
+
+UTown Town Green
+
+Education Resource Centre exterior
+
+Yusof Ishak House exterior
+
+The Deck exterior
+
+University Cultural Centre exterior
+
+Other public place
+
+[[Question:TE:SingleLine]]
+
+[[ID:location_detail]]
+
+Location detail · Required if Other, otherwise optional. Name the public place and nearby landmark.
+
+[[Question:TE:SingleLine]]
+
+[[ID:date]]
+
+Observation date · Required · YYYY-MM-DD
+
+[[Question:TE:SingleLine]]
+
+[[ID:time]]
+
+Observation time · Required · HH:MM, 24-hour SGT (UTC+08:00)
+
+[[Block:What did you hear?]]
+
+[[Question:MC:SingleAnswer:Vertical]]
+
+[[ID:source]]
+
+Main sound source · Required
+
+[[Choices]]
+
+Traffic
+
+Construction
+
+Equipment
+
+People
+
+Nature
+
+Other
+
+Unsure
+
+[[Question:MC:SingleAnswer:Vertical]]
+
+[[ID:disturbance]]
+
+How much did it disturb your activity? · Required
+
+[[Choices]]
+
+1 · Not at all — Did not affect my activity.
+
+2 · Slightly — Noticed it, but easy to continue.
+
+3 · Moderately — Distracted me at times.
+
+4 · Very — Made it hard to continue.
+
+5 · Extremely — I stopped or changed my activity.
+
+[[Question:MC:DropDown]]
+
+[[ID:activity]]
+
+What were you doing? · Required
+
+[[Choices]]
+
+Walking
+
+Studying
+
+Resting
+
+Waiting
+
+Socialising
+
+Working
+
+Other
+
+[[Block:A little more context]]
+
+[[Question:MC:SingleAnswer:Vertical]]
+
+[[ID:nature]]
+
+Did you hear nature too? · Optional
+
+[[Choices]]
+
+None heard
+
+In the background
+
+Clearly audible
+
+Dominant
+
+Unsure
+
+[[Question:MC:SingleAnswer:Vertical]]
+
+[[ID:weather]]
+
+Weather · Optional
+
+[[Choices]]
+
+Dry
+
+Rain
+
+Unsure
+
+[[Question:TE:Essay]]
+
+[[ID:note]]
+
+Anything else you noticed? · Optional · Up to 500 characters. Leave out personal details.
+
+[[Question:MC:SingleAnswer:Vertical]]
+
+[[ID:consent]]
+
+I agree to my observation being collected for this course project and used in the public map after personal details are removed. · Required
+
+[[Choices]]
+
+I agree

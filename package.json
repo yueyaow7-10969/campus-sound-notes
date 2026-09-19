@@ -1,0 +1,29 @@
+{
+  "name": "campus-sound-notes",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "test": "node --test tests/*.test.mjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "check:release": "node scripts/check-release.mjs",
+    "data:prepare": "node scripts/prepare-data.mjs",
+    "data:publish": "node scripts/publish-data.mjs"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "leaflet": "1.9.4"
+  },
+  "devDependencies": {
+    "vite": "8.3.0",
+    "typescript": "5.9.3",
+    "esbuild": "0.28.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@types/leaflet": "1.9.21",
+    "@types/node": "24.10.9"
+  }
+}
