@@ -45,7 +45,7 @@ npm run check:release
 
 Only allowlisted public fields are emitted. Coordinates are rounded to three decimals (approximately 100 m). Empty nature answers are not zero; clear/dominant proportions exclude missing/unsure. Equal-sized circles with fewer than three valid notes have no proportion colour. Real and hypothetical data remain separate.
 
-The initial production snapshot contains no observations. Design previews and software-test fixtures are not course evidence. A minimum of five valid real or explicitly chosen hypothetical submissions is still required for the final assignment visualization.
+The 19 September 2026 snapshot contains five explicitly authorized **hypothetical** assignment submissions (CSN-HYP-001–005), each submitted to Qualtrics and checked against its saved response. Select **Data → Hypothetical** in Explore to view them. The Real notes view remains empty. Their assumed observation date is 18 September 2026 (SGT); coordinates are approximate public-place presets. Six earlier QA responses are excluded. Each area has only one note, so Soundscape retains its uncoloured small-sample markers. The snapshot was generated from the authored records and backend field checks, not from a downloaded Qualtrics CSV.
 
 ## Publish on GitHub Pages
 

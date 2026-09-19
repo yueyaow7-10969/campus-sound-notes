@@ -1,1 +1,76 @@
-{"schema_version":1,"updated_at":null,"records":[]}
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-19T16:12:00+08:00",
+  "records": [
+    {
+      "id": "CSN-HYP-001",
+      "place_name": "Central Library exterior",
+      "observed_at": "2026-09-18T09:15:00+08:00",
+      "public_latitude": 1.296,
+      "public_longitude": 103.773,
+      "source": "equipment",
+      "disturbance": 2,
+      "activity": "studying",
+      "nature_presence": "background",
+      "weather": "dry",
+      "note": "[HYPOTHETICAL HYP-001] A steady ventilation hum is noticeable while reading on the outdoor walkway. Occasional birds can be heard behind it. The sound draws attention briefly, but studying can continue.",
+      "kind": "hypothetical"
+    },
+    {
+      "id": "CSN-HYP-002",
+      "place_name": "UTown Town Plaza exterior",
+      "observed_at": "2026-09-18T12:30:00+08:00",
+      "public_latitude": 1.304,
+      "public_longitude": 103.774,
+      "source": "people",
+      "disturbance": 4,
+      "activity": "socialising",
+      "nature_presence": "none",
+      "weather": "dry",
+      "note": "[HYPOTHETICAL HYP-002] Overlapping conversations and people passing through the plaza make a lunchtime conversation hard to follow. Speaking more loudly is needed. No natural sounds are noticed during this imagined observation.",
+      "kind": "hypothetical"
+    },
+    {
+      "id": "CSN-HYP-003",
+      "place_name": "Kent Ridge MRT bus stop",
+      "observed_at": "2026-09-18T17:45:00+08:00",
+      "public_latitude": 1.295,
+      "public_longitude": 103.784,
+      "source": "traffic",
+      "disturbance": 5,
+      "activity": "waiting",
+      "nature_presence": "none",
+      "weather": "dry",
+      "note": "[HYPOTHETICAL HYP-003] Repeated bus engine noise and braking interrupt reading while waiting. Reading is stopped until the vehicles move away. No natural sounds are noticed in this imagined 60-second period.",
+      "kind": "hypothetical"
+    },
+    {
+      "id": "CSN-HYP-004",
+      "place_name": "UTown Town Green",
+      "observed_at": "2026-09-18T08:10:00+08:00",
+      "public_latitude": 1.305,
+      "public_longitude": 103.773,
+      "source": "nature",
+      "disturbance": 1,
+      "activity": "resting",
+      "nature_presence": "dominant",
+      "weather": "dry",
+      "note": "[HYPOTHETICAL HYP-004] Bird calls and leaves rustling are the main sounds during a short morning rest. Footsteps occur occasionally in the distance. The sounds do not interrupt resting in this imagined setting.",
+      "kind": "hypothetical"
+    },
+    {
+      "id": "CSN-HYP-005",
+      "place_name": "Education Resource Centre exterior",
+      "observed_at": "2026-09-18T16:20:00+08:00",
+      "public_latitude": 1.306,
+      "public_longitude": 103.773,
+      "source": "nature",
+      "disturbance": 2,
+      "activity": "walking",
+      "nature_presence": "clear",
+      "weather": "dry",
+      "note": "[HYPOTHETICAL HYP-005] Birds and rustling foliage are clearly audible beside the walkway, with occasional conversation and equipment hum. These sounds are noticeable but walking continues easily in this imagined observation.",
+      "kind": "hypothetical"
+    }
+  ]
+}
