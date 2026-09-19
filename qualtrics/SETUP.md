@@ -18,6 +18,6 @@
 
 问卷已发布：https://nus.syd1.qualtrics.com/jfe/form/SV_ezjIxiya419iZsa
 
-已验证无需账户填写、强制回答、无效日期/时间拦截、Other 地点条件校验、前后返回保留选项、自然声音/天气留空、500 字符输入上限、同意项校验、实际成功回执和后台 1 条已记录的 QA。QA 标注为应用测试，不得发布为观察证据。匿名化已启用，问卷不要求登录或密码。
+已验证无需账户填写、强制回答、无效日期/时间拦截、Other 地点条件校验、前后返回保留选项、自然声音/天气留空、500 字符输入上限、同意项校验、实际成功回执和后台 2 条已记录的 QA。QA 标注为应用测试，不得发布为观察证据。匿名化已启用，问卷不要求登录或密码。
 
 当前 Chrome 自动化下载 CSV 被浏览器阻止，尚未完成真实导出文件的端到端导入核验。需要从 Data & Analysis → Export & Import → Manage Previous Downloads 下载已生成的 CSV。选择 Export labels、Download all fields，保留空值；不要启用内部 ID 标题。原始文件放在 private-data/。
