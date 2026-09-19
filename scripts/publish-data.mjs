@@ -6,6 +6,7 @@ const rows=parseCSV(await readFile(input,'utf8')),headers=rows.shift(),records=[
 for(const line of rows){const r=Object.fromEntries(headers.map((h,i)=>[h,line[i]||'']));if(r.publish!=='yes')continue;
  for(const key of ['place_name','note','location_detail'])r[key]=r[key]?.replace(/^'(?=\s*[=+@-])/,'')||'';
  if(r.consent!=='yes')throw Error('Cannot publish without consent.');
+ if(r.location_issue?.trim())throw Error('Resolve and clear the location issue before publishing.');
  if(!r.latitude||!r.longitude)throw Error('Resolve the public place coordinates before publishing.');
  if(!/^\d{4}-\d\d-\d\dT\d\d:\d\d:00\+08:00$/.test(r.observed_at)||Date.parse(r.observed_at)>Date.parse(updatedAt))throw Error('Check observation time and SGT format.');
  for(const text of [r.place_name,r.note])if(/@|https?:\/\/|(?:\+?\d[\s()-]*){8,}|(?:[A-Za-z]:\\|\/Users\/)/.test(text))throw Error('Review possible contact details or private paths before publication.');

@@ -9,7 +9,8 @@ const rows=parseCSV(await readFile(input,'utf8')),headers=rows.shift();
 const required=['place','date','time','source','disturbance','activity','consent'];
 if(!headers||required.some(h=>!headers.includes(h)))throw Error('Export with question tags: '+required.join(', '));
 const {publicPlaces}=await typedModule('src/publicPlaces.ts');
-const fields=['id','publish','kind','place_name','observed_at','latitude','longitude','source','disturbance','activity','nature_presence','weather','note','consent','location_detail'];
+const {resolveLocation}=await typedModule('shared/location.ts');
+const fields=['id','publish','kind','place_name','observed_at','latitude','longitude','accuracy_m','captured_at','location_source','location_issue','source','disturbance','activity','nature_presence','weather','note','consent','location_detail'];
 const result=[fields];let skipped=0;
 for(const line of rows){const r=Object.fromEntries(headers.map((h,i)=>[h,line[i]||'']));
  const observedDate=r.date.replaceAll('/','-');
@@ -17,7 +18,7 @@ for(const line of rows){const r=Object.fromEntries(headers.map((h,i)=>[h,line[i]
  if(r.Finished&&!['1','true','True'].includes(r.Finished)){skipped++;continue;}
  if(!['1','yes','Yes','I agree'].includes(r.consent)){skipped++;continue;}
  const place=publicPlaces.find(p=>p.name===r.place);
- const item={id:'CSN-'+randomUUID(),publish:'no',kind:'real',place_name:place?.name||r.location_detail,observed_at:observedDate+'T'+r.time+':00+08:00',latitude:place?.latitude??'',longitude:place?.longitude??'',source:r.source.toLowerCase(),disturbance:r.disturbance.match(/^[1-5]/)?.[0]||'',activity:r.activity.toLowerCase(),nature_presence:({'None heard':'none','In the background':'background','Clearly audible':'clear','Dominant':'dominant','Unsure':'unsure'})[r.nature]||r.nature?.toLowerCase()||'',weather:r.weather?.toLowerCase()||'',note:r.note||'',consent:'yes',location_detail:r.location_detail||''};
+ const item={id:'CSN-'+randomUUID(),publish:'no',kind:'real',place_name:place?.name||r.location_detail,observed_at:observedDate+'T'+r.time+':00+08:00',...resolveLocation(r,place),source:r.source.toLowerCase(),disturbance:r.disturbance.match(/^[1-5]/)?.[0]||'',activity:r.activity.toLowerCase(),nature_presence:({'None heard':'none','In the background':'background','Clearly audible':'clear','Dominant':'dominant','Unsure':'unsure'})[r.nature]||r.nature?.toLowerCase()||'',weather:r.weather?.toLowerCase()||'',note:r.note||'',consent:'yes',location_detail:r.location_detail||''};
  result.push(fields.map(f=>item[f]));
 }
 await mkdir(dirname(resolve(output)),{recursive:true});await writeFile(output,csv(result));

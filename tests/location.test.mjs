@@ -1,0 +1,23 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import vm from 'node:vm';
+import {typedModule} from '../scripts/lib.mjs';
+const {resolveLocation}=await typedModule('shared/location.ts');
+const script=await readFile(new URL('../qualtrics/location-question.js',import.meta.url),'utf8');
+const preset={latitude:1.30428,longitude:103.77363};
+const gps={__js_csn_latitude:'1.296290',__js_csn_longitude:'103.773430',__js_csn_accuracy_m:'12',__js_csn_captured_at:'2026-09-19T07:00:00.000Z',__js_csn_location_source:'device'};
+test('device coordinates take priority over preset, while legacy exports retain preset fallback',()=>{assert.equal(resolveLocation(gps,preset).latitude,'1.29629');assert.equal(resolveLocation(gps,preset).location_source,'device');assert.equal(resolveLocation({},preset).latitude,'1.30428');assert.equal(resolveLocation({},preset).location_source,'preset');assert.equal(resolveLocation({LocationLatitude:'1.3',LocationLongitude:'103.7'}).latitude,'');});
+test('partial, out-of-area, invalid accuracy and invalid dates require location review, not silent preset fallback',()=>{for(const change of [{__js_csn_latitude:''},{__js_csn_latitude:'31.2'},{__js_csn_longitude:'NaN'},{__js_csn_accuracy_m:'0'},{__js_csn_captured_at:'bad'}]){const r=resolveLocation({...gps,...change},preset);assert.equal(r.latitude,'');assert.ok(r.location_issue);}assert.ok(resolveLocation({...gps,__js_csn_accuracy_m:'350'},preset).location_issue);});
+function setup(initial={}) {
+ const fields={...initial},callbacks={},calls=[];let success,failure;
+ const element=()=>({hidden:false,disabled:false,textContent:'',listeners:{},addEventListener(event,f){this.listeners[event]=f;},setAttribute(){}});
+ const locate=element(),clear=element(),status=element(),panel={...element(),querySelector(s){return {'.csn-locate':locate,'.csn-clear':clear,'.csn-status':status}[s];}};
+ const engine={addOnReady(f){callbacks.ready=f;},getJSEmbeddedData(k){return fields[k]||'';},setJSEmbeddedData(k,v){fields[k]=v;},addOnPageSubmit(f){callbacks.submit=f;},addOnUnload(f){callbacks.unload=f;}};
+ const container={firstChild:null,querySelector(){return null;},insertBefore(){}};
+ vm.runInNewContext(script,{Qualtrics:{SurveyEngine:engine},document:{createElement(){return panel;}},window:{isSecureContext:true},navigator:{geolocation:{getCurrentPosition(s,f,options){calls.push(options);success=s;failure=f;}}},Number,Date,String});
+ callbacks.ready.call({getQuestionContainer(){return container;}});
+ return {fields,callbacks,calls,locate,clear,status,click:()=>locate.listeners.click(),cancel:()=>clear.listeners.click(),success:(coords={latitude:1.29629,longitude:103.77343,accuracy:12})=>success({coords,timestamp:Date.parse(gps.__js_csn_captured_at)}),failure:code=>failure({code})};
+}
+test('location is opt-in, ignores repeated clicks, saves coordinates/accuracy/time only on success',()=>{const s=setup();assert.equal(s.calls.length,0);s.click();s.click();assert.equal(s.calls.length,1);assert.equal(s.locate.disabled,true);s.success();assert.equal(s.fields.csn_latitude,'1.296290');assert.equal(s.fields.csn_longitude,'103.773430');assert.equal(s.fields.csn_accuracy_m,'12');assert.equal(s.fields.csn_location_source,'device');assert.equal(s.fields.csn_captured_at,gps.__js_csn_captured_at);assert.match(s.status.textContent,/Coordinates added/);assert.equal(s.locate.disabled,false);});
+test('permission refusal, timeout and unavailable positions leave fallback usable',()=>{for(const code of [1,2,3]){const s=setup();s.click();s.failure(code);assert.equal(s.fields.csn_latitude,'');assert.equal(s.locate.disabled,false);assert.match(s.status.textContent,/place below/);}});
+test('late location results after cancel, next/back or unload cannot attach coordinates',()=>{for(const cancel of [s=>s.cancel(),s=>s.callbacks.submit(),s=>s.callbacks.unload()]){const s=setup();s.click();cancel(s);s.success();assert.equal(s.fields.csn_latitude,'');}});
+test('outside-campus locations are not stored, and captured locations can be removed',()=>{const outside=setup();outside.click();outside.success({latitude:31,longitude:121,accuracy:10});assert.equal(outside.fields.csn_latitude,'');const s=setup();s.click();s.success();s.cancel();assert.ok(Object.values(s.fields).every(v=>v===''));});
+test('returning to a completed location step restores its summary without requesting GPS again',()=>{const initial=Object.fromEntries(Object.entries(gps).map(([k,v])=>[k.replace('__js_',''),v]));const s=setup(initial);assert.match(s.status.textContent,/Coordinates added/);assert.equal(s.calls.length,0);});

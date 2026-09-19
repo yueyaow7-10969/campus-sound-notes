@@ -20,6 +20,8 @@ Follow `qualtrics/SETUP.md`. Publish the survey and enter its anonymous HTTPS UR
 
 The site embeds the actual survey and always offers a direct link. Qualtrics owns form validation, submission storage and the confirmation message. The site does not infer successful submission from iframe events. Guest submission must be verified with a separate browser session after configuration.
 
+The place step offers **Use my location**. Only a participant's click starts a one-time browser permission request. Coordinates, accuracy and capture time are stored as explicit Qualtrics embedded data. Place names remain required for context. Participants can remove the device coordinates or use the eight place presets when location is unavailable. See `qualtrics/SETUP.md` for the five required embedded fields and script installation.
+
 ## Update observations
 
 1. Export complete Qualtrics responses as CSV using text labels and the configured question tags. Keep raw exports in the ignored `private-data/` directory.
@@ -29,7 +31,7 @@ The site embeds the actual survey and always offers a direct link. Qualtrics own
 npm run data:prepare -- private-data/export.csv private-data/review.csv
 ```
 
-3. Review place names and notes for personal details, verify consent, remove QA/duplicate entries, resolve Other locations manually, check SGT times and retain existing public IDs across updates. Preset coordinates are approximate outdoor starting points. Use the location description to refine them where needed. Set `publish` to `yes` only for reviewed rows. Keep `kind` as real or explicitly authorized hypothetical; test records are never public.
+3. Review place names and notes for personal details, verify consent, remove QA/duplicate entries, resolve Other locations manually, check SGT times and retain existing public IDs across updates. Valid device coordinates take priority over presets; a blank location capture falls back to the selected preset. Resolve any `location_issue` (including accuracy over 100 m) before publication. Preset coordinates are approximate outdoor starting points. Use the location description to refine them where needed. Set `publish` to `yes` only for reviewed rows. Keep `kind` as real or explicitly authorized hypothetical; test records are never public.
 4. Produce a reproducible snapshot using an explicit update time:
 
 ```sh
